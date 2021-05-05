@@ -5,19 +5,19 @@ class scene1 extends Phaser.Scene {
 
 	preload(){
 		//фон
-		this.load.image("background", "../assets/images/background.jpg");
+		this.load.image("background", "assets/images/background.jpg");
 
 		//звёзды
-		this.load.image("star_1", "../assets/images/star_1.png");
-		this.load.image("star_2", "../assets/images/star_2.png");
+		this.load.image("star_1", "assets/images/star_1.png");
+		this.load.image("star_2", "assets/images/star_2.png");
 
 		//камни
 		for (var i = 1; i < 7; i++) {
-			this.load.image("rock_"+i, "../assets/images/rock_"+i+".png");
+			this.load.image("rock_"+i, "assets/images/rock_"+i+".png");
 		}
 
 		//топливо
-		this.load.image("fuel", "../assets/images/fuel.png");
+		this.load.image("fuel", "assets/images/fuel.png");
 
 
 		//турбина
@@ -27,7 +27,7 @@ class scene1 extends Phaser.Scene {
 		});
 
 		//игрок
-		this.load.image("player", "../assets/images/player.png");
+		this.load.image("player", "assets/images/player.png");
 		
 	}
 
