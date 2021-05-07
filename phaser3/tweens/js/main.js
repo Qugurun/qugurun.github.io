@@ -86,6 +86,7 @@ function preload() {
    }
 }
 
+var itemStep = config.width/12;
 function create() {
     this.playerArray = this.add.group();
 
@@ -95,39 +96,32 @@ function create() {
     }   
 
     var pos = 0;
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 11; i++) {
        
-       this.playerArray.getChildren()[i].x = pos*config.width/11+config.width/11;
+       this.playerArray.getChildren()[i].x = pos*itemStep+itemStep;
        this.playerArray.getChildren()[i].y = 60;
        this.playerArray.add(player);
        pos += 1;
     }
 
     var pos = 0;
-    for (var i = 10; i < 20; i++) {
-       this.playerArray.getChildren()[i].x = pos*config.width/11+config.width/11;
+    for (var i = 11; i < 22; i++) {
+       this.playerArray.getChildren()[i].x = pos*itemStep+itemStep;
        this.playerArray.getChildren()[i].y = 200;
        pos += 1;
     }
 
     var pos = 0;
-    for (var i = 20; i < 30; i++) {
-       this.playerArray.getChildren()[i].x = pos*config.width/11+config.width/11;
+    for (var i = 22; i < 33; i++) {
+       this.playerArray.getChildren()[i].x = pos*itemStep+itemStep;
        this.playerArray.getChildren()[i].y = 340;
        pos += 1;
     }
 
     var pos = 0;
-    for (var i = 30; i < 40; i++) {
-       this.playerArray.getChildren()[i].x = pos*config.width/11+config.width/11;
+    for (var i = 33; i < 44; i++) {
+       this.playerArray.getChildren()[i].x = pos*itemStep+itemStep;
        this.playerArray.getChildren()[i].y = 480;
-       pos += 1;
-    }
-
-    var pos = 0;
-    for (var i = 40; i < 44; i++) {
-       this.playerArray.getChildren()[i].x = pos*config.width/11+config.width/11;
-       this.playerArray.getChildren()[i].y = 620;
        pos += 1;
     }
 
