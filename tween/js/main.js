@@ -19,8 +19,7 @@ var config = {
     banner: false,
     scene: {
         preload: preload,
-        create: create,
-        update: update
+        create: create
     }
 }
 
