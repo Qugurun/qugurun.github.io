@@ -29,7 +29,7 @@
  
     <script type='text/javascript'>
       let currentProgressValue = 0
-      let documentTitle = 'Solar2D HTML5 App'
+      let documentTitle = document.title
 
       let styles = [
           'background: #ffcc01',
@@ -128,14 +128,6 @@
             newLayer('progressBorder.png', 50, 70, 1, imageList)
             
             // --------------------------------------------------------
-            function sleep(milliseconds) {
-              const date = Date.now();
-              let currentDate = null;
-              do {
-                currentDate = Date.now();
-              } while (currentDate - date < milliseconds);
-            }
-
             function draw(){
                 // checking that the game has loaded into canvas solar2d
                 if (canvas_solar2d.width ===0 && canvas_solar2d.width === 0){
@@ -156,6 +148,7 @@
                   // hidden the canvas of the loading screen
                   canvas_loader.hidden = true
                   canvas_loader.remove()
+                  document.title = documentTitle
                 }
             }
             resize()
