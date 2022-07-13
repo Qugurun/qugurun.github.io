@@ -148,6 +148,12 @@
                   // hidden the canvas of the loading screen
                   canvas_loader.hidden = true
                   canvas_loader.remove()
+                  background.remove()
+                  for (let index = 0; index < imageList.length; index++) {
+                  imageList[index].remove()
+                  }
+                  removeEventListener('resize', resize)
+
                   document.title = documentTitle
                 }
             }
