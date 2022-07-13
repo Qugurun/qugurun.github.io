@@ -25,7 +25,9 @@
     <div>
       <canvas id="canvas" align="center" oncontextmenu="event.preventDefault()" width="0" height="0"></canvas>
     </div>
-    <div><canvas id="canvas_loader" align="center"></canvas></div>
+    <div id="loader">
+      <canvas id="canvas_loader" align="center"></canvas>
+    </div>
  
     <script type='text/javascript'>
       let currentProgressValue = 0
@@ -146,13 +148,14 @@
                 }else{  
                   context.clearRect(0, 0, window.innerWidth, window.innerHeight)              
                   // hidden the canvas of the loading screen
-                  canvas_loader.hidden = true
                   canvas_loader.remove()
                   background.remove()
+
                   for (let index = 0; index < imageList.length; index++) {
-                  imageList[index].remove()
+                    imageList[index].remove()
                   }
                   removeEventListener('resize', resize)
+                  document.getElementById('loader').remove()
 
                   document.title = documentTitle
                 }
