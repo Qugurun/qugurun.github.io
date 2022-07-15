@@ -86,7 +86,7 @@
 
                 object.onload = function(){
                     scale = (scale != undefined)?scale: 1
-                    object.factor = (512*scale)/(1080/100)
+                    object.factor = (object.width*scale)/(1080/100)
 
                     object.width = object.width * scale
                     object.height = object.height * scale
@@ -130,11 +130,11 @@
                 return object
             }
 
-            newLayer('logo.png', 50, 50, 0.5, imageList, false)
+            newLayer('logo.png', 50, 50, 1, imageList, false)
             newLayer('progressBackground.png', 50, 70, 1, imageList, false)
             newLayerProgress(newLayer('progressStatus.jpg', 50, 70, 1, imageList, false))
             newLayer('progressBorder.png', 50, 70, 1, imageList, false)
-            newLayer('solar2d_logo.png', 50, 85, 0.4, imageList, true)
+            newLayer('solar2d_logo.png', 50, 85, 1, imageList, true)
 
             // --------------------------------------------------------
             function draw(){
