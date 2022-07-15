@@ -129,7 +129,7 @@
               }
                 return object
             }
-
+            // file, x%, y%, scale, image list, last layer
             newLayer('logo.png', 50, 50, 1, imageList, false)
             newLayer('progressBackground.png', 50, 70, 1, imageList, false)
             newLayerProgress(newLayer('progressStatus.jpg', 50, 70, 1, imageList, false))
@@ -151,8 +151,6 @@
                   for (let index = 0; index < imageList.length; index++) {
                     imageList[index].draw();
                   }
-
-                  requestAnimationFrame(draw)
                 }else{  
                   context.clearRect(0, 0, window.innerWidth, window.innerHeight)              
                   // hidden the canvas of the loading screen
@@ -168,6 +166,9 @@
                   document.title = documentTitle
                 }
               }
+              if (document.getElementById('loader') != null){
+                requestAnimationFrame(draw)
+              } 
             }
             resize()
             requestAnimationFrame(draw)
