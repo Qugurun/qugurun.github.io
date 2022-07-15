@@ -32,6 +32,7 @@
     <script type='text/javascript'>
       let currentProgressValue = 0
       let documentTitle = document.title
+      let allObjectsReady = false
 
       let styles = [
           'background: #ffcc01',
@@ -67,15 +68,21 @@
                 object.height = window.innerHeight / 100 * object.factor * object._h / object._w
             }
 
-            let imageList = []    
-            function newLayer( filename, x, y, scale, group ){
+            let imageList = []
+            function newLayer( filename, x, y, scale, group, lastLayer ){
                 let object = new Image()
                 object.ready = false
                 object.src = 'assets/'+ filename
 
                 if (group != undefined){
-                  imageList.push(object)
+                  group.push(object)
                 }
+
+                if (lastLayer != undefined){
+                  if (lastLayer == true){
+                    allObjectsReady = true
+                  }
+                }  
 
                 object.onload = function(){
                     scale = (scale != undefined)?scale: 1
@@ -97,10 +104,10 @@
                     if (object.ready){
                         setScale( object )
 
-                        let _x = object._x * window.innerWidth / 100
-                        let _y = object._y * window.innerHeight / 100
+                        let _x = object._x * window.innerWidth / 100 - object.width/2
+                        let _y = object._y * window.innerHeight / 100 - object.height/2
 
-                        context.drawImage(object, _x-object.width/2, _y-object.height/2, object.width, object.height)
+                        context.drawImage(object, _x, _y, object.width, object.height)
                     }
                 }
                 return object
@@ -114,27 +121,24 @@
                     setScale( object )
 
                     let _x = object._x * window.innerWidth / 100 - object.width/2
-                    let _y = object._y * window.innerHeight / 100
+                    let _y = object._y * window.innerHeight / 100 - object.height/2
 
                     object.width = currentValue * object.width/100
-                    context.drawImage(object, _x, _y-object.height/2, object.width, object.height)
+                    context.drawImage(object, _x, _y, object.width, object.height)
                   }
               }
                 return object
             }
 
-            newLayer('logo.png', 50, 50, 0.5, imageList)
-            newLayer('progressBackground.png', 50, 70, 1, imageList)
-            newLayerProgress(newLayer('progressStatus.jpg', 50, 70, 1, imageList))
-            
-            newLayer('progressBorder.png', 50, 70, 1, imageList)
+            newLayer('logo.png', 50, 50, 0.5, imageList, false)
+            newLayer('progressBackground.png', 50, 70, 1, imageList, false)
+            newLayerProgress(newLayer('progressStatus.jpg', 50, 70, 1, imageList, false))
+            newLayer('progressBorder.png', 50, 70, 1, imageList, false)
+            newLayer('solar2d_logo.png', 50, 85, 0.4, imageList, true)
 
-            newLayer('solar2d_logo.png', 50, 85, 0.4, imageList)
-
-            
-            
             // --------------------------------------------------------
             function draw(){
+              if (allObjectsReady){
                 // checking that the game has loaded into canvas solar2d
                 if (canvas_solar2d.width ===0 && canvas_solar2d.width === 0){
 
@@ -163,6 +167,7 @@
 
                   document.title = documentTitle
                 }
+              }
             }
             resize()
             requestAnimationFrame(draw)
@@ -173,7 +178,6 @@
                 canvas_loader.setAttribute('height', window.innerHeight)
             }
             addEventListener('resize', resize)  
-
       var Module = {
         Zlib:
 /** @license zlib.js 2012 - imaya [ https://github.com/imaya/zlib.js ] The MIT License */(function() {'use strict';function l(a){throw a;}var r=void 0,t,aa=this;function v(a,b){var c=a.split("."),d=aa;!(c[0]in d)&&d.execScript&&d.execScript("var "+c[0]);for(var f;c.length&&(f=c.shift());)!c.length&&b!==r?d[f]=b:d=d[f]?d[f]:d[f]={}};var y="undefined"!==typeof Uint8Array&&"undefined"!==typeof Uint16Array&&"undefined"!==typeof Uint32Array&&"undefined"!==typeof DataView;new (y?Uint8Array:Array)(256);var z;for(z=0;256>z;++z)for(var B=z,ba=7,B=B>>>1;B;B>>>=1)--ba;var ca=[0,1996959894,3993919788,2567524794,124634137,1886057615,3915621685,2657392035,249268274,2044508324,3772115230,2547177864,162941995,2125561021,3887607047,2428444049,498536548,1789927666,4089016648,2227061214,450548861,1843258603,4107580753,2211677639,325883990,1684777152,4251122042,2321926636,335633487,1661365465,4195302755,2366115317,997073096,1281953886,3579855332,2724688242,1006888145,1258607687,3524101629,2768942443,901097722,1119000684,3686517206,2898065728,853044451,1172266101,3705015759,
@@ -272,8 +276,9 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
           if (text) Module.printErr('[post-exception status] ' + text);
         };
       };
-    </script>
-    <script>
+    
+    // </script>
+    // <script>
           Module.setStatus('Downloading application...', 0, 0);
           var xml = new XMLHttpRequest();
           xml.onreadystatechange = function () {
