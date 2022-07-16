@@ -236,17 +236,16 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
 
           return canvas;
         })(),
+        /** Custom Code*/ 
         setStatus: function(text, current, total) {
           var a = text.split('...');
-          
-          /** Custom Code*/
+           
           currentProgressValue ++
           if (a[0] === ''){
             currentProgressValue = 100
           }
           document.title = documentTitle + ' ' + currentProgressValue + '%'
-          /** End Custom Code*/
-           
+
           if (a.length > 1) {
             var caption = a[0];
             a = a[1].split('/');
@@ -265,6 +264,7 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
             Module.setStatus.last = now;
           }
         },
+        /** End Custom Code*/ 
         totalDependencies: 0,
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
