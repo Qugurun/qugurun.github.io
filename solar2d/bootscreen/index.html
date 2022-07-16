@@ -1,3 +1,4 @@
+<!-- Custom Code -->
 <!doctype html>
 <html lang="en-us">
    <head>
@@ -179,6 +180,7 @@
                 canvas_loader.setAttribute('height', window.innerHeight)
             }
             addEventListener('resize', resize)  
+/** End Custom Code*/
       var Module = {
         Zlib:
 /** @license zlib.js 2012 - imaya [ https://github.com/imaya/zlib.js ] The MIT License */(function() {'use strict';function l(a){throw a;}var r=void 0,t,aa=this;function v(a,b){var c=a.split("."),d=aa;!(c[0]in d)&&d.execScript&&d.execScript("var "+c[0]);for(var f;c.length&&(f=c.shift());)!c.length&&b!==r?d[f]=b:d=d[f]?d[f]:d[f]={}};var y="undefined"!==typeof Uint8Array&&"undefined"!==typeof Uint16Array&&"undefined"!==typeof Uint32Array&&"undefined"!==typeof DataView;new (y?Uint8Array:Array)(256);var z;for(z=0;256>z;++z)for(var B=z,ba=7,B=B>>>1;B;B>>>=1)--ba;var ca=[0,1996959894,3993919788,2567524794,124634137,1886057615,3915621685,2657392035,249268274,2044508324,3772115230,2547177864,162941995,2125561021,3887607047,2428444049,498536548,1789927666,4089016648,2227061214,450548861,1843258603,4107580753,2211677639,325883990,1684777152,4251122042,2321926636,335633487,1661365465,4195302755,2366115317,997073096,1281953886,3579855332,2724688242,1006888145,1258607687,3524101629,2768942443,901097722,1119000684,3686517206,2898065728,853044451,1172266101,3705015759,
@@ -236,13 +238,15 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
         })(),
         setStatus: function(text, current, total) {
           var a = text.split('...');
-
+          
+          /** Custom Code*/
           currentProgressValue ++
           if (a[0] === ''){
             currentProgressValue = 100
           }
           document.title = documentTitle + ' ' + currentProgressValue + '%'
-
+          /** End Custom Code*/
+           
           if (a.length > 1) {
             var caption = a[0];
             a = a[1].split('/');
@@ -258,7 +262,6 @@ k.p.toString(16)+", data=0x"+p.toString(16)))}return m};t.L=function(a){this.j=a
             if (Module.setStatus.hasOwnProperty('last') == false) Module.setStatus.last = 0;
             var now = Date.now();
             if (now - Module.setStatus.last < 1000) return; // if this is a progress update, skip it if too soon
-
             Module.setStatus.last = now;
           }
         },
