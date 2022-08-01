@@ -1,5 +1,5 @@
 import Phaser from './lib/phaser.js'
-import Game from './scenes/Game.js'
+import Game from './scenes/game.js'
 
 let config = {
     type: Phaser.WEBGL,
