@@ -21,10 +21,25 @@ export default class Game extends Phaser.Scene {
         let scaleLogo = 1
         
         // background -------------------------------------------------------------
+        //Stretch
+        //let bg = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg')
+        //bg.update = function () {
+            //this.displayWidth = app.width
+            //this.displayHeight = app.height
+        //}
+        
+        //Proportion
         let bg = this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'bg')
+        bg.orgWidth = bg.displayWidth
+        bg.orgHeight = bg.displayHeight
         bg.update = function () {
-            this.displayWidth = app.width
-            this.displayHeight = app.height
+            if (app.width * this.orgHeight/this.orgWidth < app.height){
+                this.displayWidth = app.height * this.orgWidth/this.orgHeight
+                this.displayHeight = app.height
+            }else{
+                this.displayWidth = app.width
+                this.displayHeight = app.width * this.orgHeight/this.orgWidth
+            }
         }
 
         // logoCenter -------------------------------------------------------------
