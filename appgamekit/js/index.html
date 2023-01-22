@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>AppGameKit Web App</title>
+    
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript">
+        const start = Date.now()
+        //--------------------------------------------------------------------
+        //LOGO v1
+        //red
+        let _style1 = [ 'font: bold 12px Arial; color: #FFFFFF; background: #AC0140','font: 12px Arial; color: #FFFFFF; background: #000000','font: 12px Arial; color: #FF6906; background: #FFFFFF']
+
+        //blue
+        // let _style2 = [ 'font: bold 12px Arial; color: #FFFFFF; background: #3170D4','font: 12px Arial; color: #FFFFFF; background: #000000','font: 12px Arial; color: #FF6906; background: #FFFFFF']
+        console.log ( '%c AppGameKit %c  v2022.06.27  %c https://www.appgamekit.com',_style1[0], _style1[1], _style1[2]);
+        // console.log ( '%c AppGameKit %c  v2022.06.27  %c https://www.appgamekit.com',_style2[0], _style2[1], _style2[2]);
+        
+        // //--------------------------------------------------------------------
+        // //LOGO v2
+        // // red
+        // let _style3 = [ 
+        // 'font: bold 12px Arial; color: #FFFFFF; background: #6D0C21',
+        // 'font: bold 12px Arial; color: #C42E4E; background: #6D0C21',
+        // 'font: bold 12px Arial; color: #FFFFFF; background: #6D0C21',
+        // 'background: #A61634',
+        // 'font: 12px Arial; color: #FFFFFF; background: #000000',
+        // 'font: 12px Arial; color: #FF6906; background: #FFFFFF']
+
+        // // blue
+        // let _style4 = [ 
+        // 'font: bold 12px Arial; color: #FFFFFF; background: #7FE3FE',
+        // 'font: bold 12px Arial; color: #3170D4; background: #7FE3FE',
+        // 'font: bold 12px Arial; color: #FFFFFF; background: #7FE3FE',
+        // 'background: #3170D4',
+        // 'font: 12px Arial; color: #FFFFFF; background: #000000',
+        // 'font: 12px Arial; color: #FF6906; background: #FFFFFF']
+
+        // console.log ( '%c App %cGame %cKit %c %c v2022.06.27  %c https://www.appgamekit.com',_style3[0], _style3[1], _style3[2], _style3[3], _style3[4], _style3[5]);
+        // console.log ( '%c App %cGame %cKit %c %c v2022.06.27  %c https://www.appgamekit.com',_style4[0], _style4[1], _style4[2], _style4[3], _style4[4], _style4[5]);
+    </script> 
+
+        
+
+    <style>
+        html, body {
+            overflow: hidden;
+        }
+
+        body {
+
+            background-color: black;
+        }
+
+        body > div {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+        canvas.emscripten { background: #000; border: 0px none; padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+
+    </style>
+  </head>
+  <body>
+   
+    <div style="text-align: center">
+        <!-- <div> <span id="agkstatus" style="color:#000"></span> </div> -->
+        <div style="display: inline-block; border: 0px solid; margin: 0px auto">
+            <canvas class="emscripten" id="canvas" width="0" height="0" oncontextmenu="event.preventDefault()"></canvas>
+        </div>
+        <div id="loader">
+            <canvas id="canvas_loader" align="center"></canvas>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const log = console.log
+
+        //BOOT SCREEN
+        let currentProgressValue = 0;
+        let tempProgressValue = 0;
+        let onloadend = false;
+
+        
+        let allObjectsReady = false
+
+        let canvas_loader = document.getElementById('canvas_loader');
+        let context = canvas_loader.getContext('2d');
+
+        let background = new Image();  background.src = 'assets/background.jpg'
+       
+        function setScale( object ){
+            object.width = window.innerHeight / 100 * object.factor;
+            object.height = window.innerHeight / 100 * object.factor * object._h / object._w;
+        }
+
+        let imageList = []
+        function newLayer( filename, x, y, scale, group, lastLayer ){
+            let object = new Image();
+            object.ready = false;
+            object.src = 'assets/'+ filename;
+
+            if (group != undefined){
+              group.push(object);
+            }
+
+            if (lastLayer != undefined){
+              if (lastLayer == true){
+                allObjectsReady = true;
+              }
+            }  
+
+            object.onload = function(){
+                scale = (scale != undefined)?scale: 1
+                object.factor = (object.width*scale)/(1080/100);
+
+                object.width = object.width * scale;
+                object.height = object.height * scale;
+
+                object._w = object.width;
+                object._h = object.height;
+
+                object._x = x;
+                object._y = y;
+
+                object.ready = true;
+            }
+
+            object.draw = function(){
+                if (object.ready){
+                    setScale( object );
+
+                    let _x = object._x * window.innerWidth / 100 - object.width/2;
+                    let _y = object._y * window.innerHeight / 100 - object.height/2;
+
+                    context.drawImage(object, _x, _y, object.width, object.height);
+                }
+            }
+            return object
+        }
+
+        function newLayerProgress( object ){
+            object.init_ready = false;
+            object.m_width = 0;
+            object.draw = function(){
+                if (object.ready){
+                   
+                    setScale( object );
+
+                    let _x = object._x * window.innerWidth / 100 - object.width/2;
+                    let _y = object._y * window.innerHeight / 100 - object.height/2;
+
+                    if (object.init_ready == false){
+                        object.init_ready = true;
+                        object.width = 2;
+                    }
+
+                    let i = 85 * object.width/100;
+
+                    if (currentProgressValue == 0 && currentProgressValue < 85){
+                        tempProgressValue += 1
+
+                        object.width = tempProgressValue; 
+
+                        if (object.width > i){
+                            object.width = i
+                        }
+                    }else{
+                        if (currentProgressValue > tempProgressValue ){
+                            object.width = currentProgressValue * object.width/100;
+                        }                    
+                    }
+                    context.drawImage(object, _x, _y, object.width, object.height);
+                }
+            }
+            return object;
+        }
+        // file, x%, y%, scale, image list, last layer
+        newLayer('logo.png', 50, 50, 1, imageList, false);
+        newLayer('progressBackground.png', 50, 70, 1, imageList, false);
+        newLayerProgress(newLayer('progressStatus.jpg', 50, 70, 1, imageList, false));
+        newLayer('progressBorder.png', 50, 70, 1, imageList, false);
+        newLayer('made-with-appgamekit.png', 50, 85, 1, imageList, true);
+
+        // --------------------------------------------------------
+        function draw(){
+            if (allObjectsReady){
+                // checking that the game has loaded
+                if (onloadend != true){
+                    // clearing the screen
+                    context.clearRect(0, 0, window.innerWidth, window.innerHeight)
+                    // drawing the background image
+                    context.drawImage(background, 0, 0, window.innerWidth, window.innerHeight)
+
+                    // drawing the remaining objects
+                    for (let index = 0; index < imageList.length; index++) {
+                        imageList[index].draw();
+                    }
+                }else{
+                    context.clearRect(0, 0, window.innerWidth, window.innerHeight)
+                    // drawing the background image
+                    context.drawImage(background, 0, 0, window.innerWidth, window.innerHeight)
+
+                    // drawing the remaining objects
+                    for (let index = 0; index < imageList.length; index++) {
+                        imageList[index].draw();
+                    }
+
+                    context.clearRect(0, 0, window.innerWidth, window.innerHeight)              
+                    // hidden the canvas of the loading screen
+                    canvas_loader.remove()
+                    background.remove()
+
+                    for (let index = 0; index < imageList.length; index++) {
+                        imageList[index].remove()
+                    }
+                    removeEventListener('resize', canvas_loader_resize)
+                    document.getElementById('loader').remove()
+
+                    function game_resize(){
+                        canvas.width = window.innerWidth;
+                        canvas.height = window.innerHeight;
+                    }
+                    addEventListener('resize', game_resize) 
+                    game_resize()    
+                }
+            }
+          if (document.getElementById('loader') != null){
+            requestAnimationFrame(draw)
+          } 
+        }
+        canvas_loader_resize()
+        requestAnimationFrame(draw)
+        
+        // canvas size update
+        function canvas_loader_resize(){
+            canvas_loader.setAttribute('width', window.innerWidth)
+            canvas_loader.setAttribute('height', window.innerHeight)
+        }
+        addEventListener('resize', canvas_loader_resize)  
+
+        // ----------------------------------------------------------------------------------
+        var Module = {
+            preRun: [],
+            postRun: [],
+            print: function(text) {},
+            printErr: function(text) {},
+            canvas: (function() {
+              var canvas = document.getElementById('canvas');
+
+              canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+              return canvas;
+            })(),
+            setStatus: function(text) {},
+            totalDependencies: 0,
+            monitorRunDependencies: function(left) {}
+        };
+    </script>
+
+    <script>
+
+    var script = document.createElement('script');
+    script.src = "AGKPlayer.asm.js";
+    var _time = 0;
+    script.onload = function() {
+        setTimeout(function() {
+            (function() {
+                var memoryInitializer = 'AGKPlayer.html.mem';
+
+                if (typeof Module['locateFile'] === 'function') {
+                  memoryInitializer = Module['locateFile'](memoryInitializer);
+                } else if (Module['memoryInitializerPrefixURL']) {
+                  memoryInitializer = Module['memoryInitializerPrefixURL'] + memoryInitializer;
+                }
+                var xhr = Module['memoryInitializerRequest'] = new XMLHttpRequest();
+
+                //-----------------------------------------------------------------
+                //START CUSTOM CODE
+                xhr.onloadstart = function() {
+                    // console.log(`loadstart`);
+                };
+
+                xhr.onloadend = function(event) {
+                    // console.log(`onloadend`);
+                    onloadend = true;
+                    const millis = Date.now() - start
+                    console.log("loaded in " + (millis / 1000).toString() + " ms." )
+
+                    //--------------------------------------------------------------------
+                    //PokiSDK
+                    // PokiSDK.gameLoadingFinished();
+                    //--------------------------------------------------------------------
+                };
+
+                xhr.onprogress = function(event) {
+                    // console.log(event.loaded,event.total);
+                    currentProgressValue = Math.round(event.loaded/(event.total/100));
+                };
+                //END CUSTOM CODE
+                //-----------------------------------------------------------------
+
+                xhr.open('GET', memoryInitializer, true);
+                xhr.responseType = 'arraybuffer';
+                xhr.send(null);
+            })();
+
+                var script = document.createElement('script');
+                script.src = "AGKPlayer.js";
+                document.body.appendChild(script);
+        }, 1);
+    };
+    document.body.appendChild(script);
+
+</script>
+
+  </body>
+</html>
