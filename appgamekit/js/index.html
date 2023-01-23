@@ -9,27 +9,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script type="text/javascript">
-        const start = Date.now()
         //--------------------------------------------------------------------
         //LOGO v1
         //red
-        let _style1 = [ 'font: bold 12px Arial; color: #FFFFFF; background: #AC0140','font: 12px Arial; color: #FFFFFF; background: #000000','font: 12px Arial; color: #FF6906; background: #FFFFFF']
+        // let _style1 = [ 'font: bold 12px Arial; color: #FFFFFF; background: #AC0140','font: 12px Arial; color: #FFFFFF; background: #000000','font: 12px Arial; color: #FF6906; background: #FFFFFF']
 
         //blue
         // let _style2 = [ 'font: bold 12px Arial; color: #FFFFFF; background: #3170D4','font: 12px Arial; color: #FFFFFF; background: #000000','font: 12px Arial; color: #FF6906; background: #FFFFFF']
-        console.log ( '%c AppGameKit %c  v2022.06.27  %c https://www.appgamekit.com',_style1[0], _style1[1], _style1[2]);
+        // console.log ( '%c AppGameKit %c  v2022.06.27  %c https://www.appgamekit.com',_style1[0], _style1[1], _style1[2]);
         // console.log ( '%c AppGameKit %c  v2022.06.27  %c https://www.appgamekit.com',_style2[0], _style2[1], _style2[2]);
         
         // //--------------------------------------------------------------------
         // //LOGO v2
         // // red
-        // let _style3 = [ 
-        // 'font: bold 12px Arial; color: #FFFFFF; background: #6D0C21',
-        // 'font: bold 12px Arial; color: #C42E4E; background: #6D0C21',
-        // 'font: bold 12px Arial; color: #FFFFFF; background: #6D0C21',
-        // 'background: #A61634',
-        // 'font: 12px Arial; color: #FFFFFF; background: #000000',
-        // 'font: 12px Arial; color: #FF6906; background: #FFFFFF']
+        let _style3 = [ 
+        'font: bold 12px Arial; color: #FFFFFF; background: #A61634',
+        'font: bold 12px Arial; color: #FFFFFF; background: #A61634',
+        'font: bold 12px Arial; color: #FFFFFF; background: #A61634',
+        'background: #6D0C21',
+        'font: 12px Arial; color: #FFFFFF; background: #000000',
+        'font: 12px Arial; color: #FF6906; background: #FFFFFF']
 
         // // blue
         // let _style4 = [ 
@@ -40,8 +39,32 @@
         // 'font: 12px Arial; color: #FFFFFF; background: #000000',
         // 'font: 12px Arial; color: #FF6906; background: #FFFFFF']
 
-        // console.log ( '%c App %cGame %cKit %c %c v2022.06.27  %c https://www.appgamekit.com',_style3[0], _style3[1], _style3[2], _style3[3], _style3[4], _style3[5]);
+        console.log ( '%c App %cGame %cKit %c %c v2022.06.27  %c https://www.appgamekit.com',_style3[0], _style3[1], _style3[2], _style3[3], _style3[4], _style3[5]);
         // console.log ( '%c App %cGame %cKit %c %c v2022.06.27  %c https://www.appgamekit.com',_style4[0], _style4[1], _style4[2], _style4[3], _style4[4], _style4[5]);
+
+        let __agk_visible = 1
+        let __agk__focus = 1
+
+        document.addEventListener('visibilitychange', function (event) {
+            if (document.hidden) {
+                __agk_visible = 0
+                // console.log('not visible');
+            } else {
+                __agk_visible = 1
+                // console.log('is visible');
+            }
+        });
+
+        window.addEventListener('focus', function (event) {
+            __agk__focus = 1
+            // console.log('has focus');
+        });
+
+        window.addEventListener('blur', function (event) {
+            __agk__focus = 0
+            // console.log('lost focus');
+        });
+
     </script> 
 
         
@@ -77,7 +100,7 @@
     <div style="text-align: center">
         <!-- <div> <span id="agkstatus" style="color:#000"></span> </div> -->
         <div style="display: inline-block; border: 0px solid; margin: 0px auto">
-            <canvas class="emscripten" id="canvas" width="0" height="0" oncontextmenu="event.preventDefault()"></canvas>
+            <canvas class="emscripten" id="canvas" width="0" height="0" tabindex="1" oncontextmenu="event.preventDefault()"></canvas>
         </div>
         <div id="loader">
             <canvas id="canvas_loader" align="center"></canvas>
@@ -233,7 +256,9 @@
                         canvas.height = window.innerHeight;
                     }
                     addEventListener('resize', game_resize) 
-                    game_resize()    
+                    game_resize()
+
+
                 }
             }
           if (document.getElementById('loader') != null){
@@ -250,6 +275,7 @@
         }
         addEventListener('resize', canvas_loader_resize)  
 
+
         // ----------------------------------------------------------------------------------
         var Module = {
             preRun: [],
@@ -260,7 +286,7 @@
               var canvas = document.getElementById('canvas');
 
               canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
-
+          
               return canvas;
             })(),
             setStatus: function(text) {},
@@ -295,13 +321,6 @@
                 xhr.onloadend = function(event) {
                     // console.log(`onloadend`);
                     onloadend = true;
-                    const millis = Date.now() - start
-                    console.log("loaded in " + (millis / 1000).toString() + " ms." )
-
-                    //--------------------------------------------------------------------
-                    //PokiSDK
-                    // PokiSDK.gameLoadingFinished();
-                    //--------------------------------------------------------------------
                 };
 
                 xhr.onprogress = function(event) {

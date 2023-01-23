@@ -86,7 +86,7 @@ Module.expectedDataFileDownloads++;
 		function runWithFS() {
 			function assert(check, msg) {
 				if (!check) throw msg + (new Error).stack
-			} Module["FS_createPath"]("/", "media", true, true); function DataRequest(start, end, crunched, audio) {
+			} Module["FS_createPath"]("/", "media", true, true);Module["FS_createPath"]("/media", "JS", true, true); function DataRequest(start, end, crunched, audio) {
 				this.start = start;
 				this.end = end;
 				this.crunched = crunched;
@@ -149,7 +149,7 @@ Module.expectedDataFileDownloads++;
 			if (!Module["preRun"]) Module["preRun"] = [];
 			Module["preRun"].push(runWithFS)
 		}
-	}); loadPackage({"files":[{"audio":0,"start":0,"crunched":0,"end":19430,"filename":"/media/bg.jpg"},{"audio":0,"start":19430,"crunched":0,"end":29139,"filename":"/media/bytecode.byc"},{"audio":0,"start":29139,"crunched":0,"end":41751,"filename":"/media/cloud_0.png"},{"audio":0,"start":41751,"crunched":0,"end":48604,"filename":"/media/cloud_1.png"},{"audio":0,"start":48604,"crunched":0,"end":58996,"filename":"/media/cloud_2.png"},{"audio":0,"start":58996,"crunched":0,"end":68789,"filename":"/media/foliage_l.png"},{"audio":0,"start":68789,"crunched":0,"end":75019,"filename":"/media/foliage_r.png"},{"audio":0,"start":75019,"crunched":0,"end":79930,"filename":"/media/player.png"}],"remote_package_size":79930,"package_uuid":"e3c8dd30-b68a-4332-8c93-d0cf8f9d28a0"})
+	}); loadPackage({"files":[{"audio":0,"start":0,"crunched":0,"end":19430,"filename":"/media/bg.jpg"},{"audio":0,"start":19430,"crunched":0,"end":30133,"filename":"/media/bytecode.byc"},{"audio":0,"start":30133,"crunched":0,"end":42745,"filename":"/media/cloud_0.png"},{"audio":0,"start":42745,"crunched":0,"end":49598,"filename":"/media/cloud_1.png"},{"audio":0,"start":49598,"crunched":0,"end":59990,"filename":"/media/cloud_2.png"},{"audio":0,"start":59990,"crunched":0,"end":69783,"filename":"/media/foliage_l.png"},{"audio":0,"start":69783,"crunched":0,"end":76013,"filename":"/media/foliage_r.png"},{"audio":0,"start":76013,"crunched":0,"end":76645,"filename":"/media/JS/mylibrary.js"},{"audio":0,"start":76645,"crunched":0,"end":77236,"filename":"/media/JS/poki.js"},{"audio":0,"start":77236,"crunched":0,"end":82147,"filename":"/media/player.png"}],"remote_package_size":82147,"package_uuid":"e3c8dd30-b68a-4332-8c93-d0cf8f9d28a0"})
 }))();
 var Module;
 if (!Module) Module = (typeof Module !== "undefined" ? Module : null) || {};
@@ -1428,6 +1428,7 @@ var ASM_CONSTS = [(function() {
 		var ca = document.cookie.split(";");
 		
 		if (cookieName.indexOf("call") == 0){
+			//console.log(returnValue)
 			let result = eval(returnValue);
 			
 			if (result == undefined){
