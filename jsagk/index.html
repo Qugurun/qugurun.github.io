@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="howler2.2.3.core.min.js" type="text/javascript"></script>
+    <style>
+    html,
+    body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
+    
+    body {
+        background-color: black;
+    }
+    
+    body > div {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    
+    #background {
+        width: 100%;
+        height: 100%;
+        background-image: url(background.jpg);
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+    }
+    
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #logo {
+        text-align: center;
+    }
+    
+    #logo img {
+        max-width: var(--width);
+    }
+    
+    #loading {
+        margin: 0 auto;
+        border-radius: 20px;
+        width: 60%;
+        height: 8px;
+        background: #fff;
+        border: 2px solid #fff;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    #progress {
+        border-radius: 20px;
+        width: 0%;
+        height: 100%;
+        background: #b70041;
+    }
+    /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+    
+    canvas.emscripten {
+        background: #000;
+        border: 0px none;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center">
+        <div> <span id="agkstatus" style="color:#fff; display=none"></span> </div>
+        <div style="display: inline-block; border: 0px solid; margin: 0px auto">
+            <canvas class="emscripten" id="canvas" width="0%" height="0%" oncontextmenu="event.preventDefault()"></canvas>
+            <video crossOrigin="anonymous" style="display:none" id="AGKVideo" src=""></video>
+        </div>
+    </div>
+    <div id="background"></div>
+    <div class="container">
+        <div id="logo"> <img src="made-with-appgamekit.png">
+            <div id="loading">
+                <div id="progress"></div>
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript'>
+    let width = window.innerWidth / window.innerHeight * 50;
+    document.documentElement.style.setProperty('--width', width + '%');
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > window.innerHeight) {
+            let width = window.innerWidth / window.innerHeight * 50;
+        } else {
+            let width = window.innerHeight / window.innerWidth * 50;
+        }
+        document.documentElement.style.setProperty('--width', width + '%');
+    });
+    var Module = {
+        preRun: [],
+        postRun: [],
+        print: function(text) {},
+        printErr: function(text) {},
+        canvas: (function() {
+            var canvas = document.getElementById('canvas');
+            canvas.addEventListener("webglcontextlost", function(e) {
+                alert('WebGL context lost. You will need to reload the page.');
+                e.preventDefault();
+            }, false);
+            return canvas;
+        })(),
+        setStatus: function(text) {},
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {}
+    };
+    window.onerror = function(text) {
+        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+        var agkStatus = document.getElementById("agkstatus");
+        if (agkStatus) {
+            agkStatus.style.color = "Red";
+            agkStatus.textContent = text;
+        }
+        //alert(text);
+    };
+    </script>
+    <script>
+    var script = document.createElement('script');
+    script.src = "AGKPlayer.asm.js";
+    script.onload = function() {
+        setTimeout(function() {
+            (function() {
+                var memoryInitializer = 'AGKPlayer.html.mem';
+                if (typeof Module['locateFile'] === 'function') {
+                    memoryInitializer = Module['locateFile'](memoryInitializer);
+                } else if (Module['memoryInitializerPrefixURL']) {
+                    memoryInitializer = Module['memoryInitializerPrefixURL'] + memoryInitializer;
+                }
+                var xhr = Module['memoryInitializerRequest'] = new XMLHttpRequest();
+                xhr.open('GET', memoryInitializer, true);
+                xhr.responseType = 'arraybuffer';
+                xhr.send(null);
+            })();
+            var script = document.createElement('script');
+            script.src = "AGKPlayer.js";
+            document.body.appendChild(script);
+        }, 1); // delaying even 1ms is enough to allow compilation memory to be reclaimed
+    };
+    document.body.appendChild(script);
+    </script>
+</body>
+
+</html>
