@@ -1,13 +1,13 @@
 {
 	"generator_info": "Shape definitions generated with PhysicsEditor. Visit https://www.codeandweb.com/physicseditor",
-	"ball_1": {
+	"ball": {
 		"type": "fromPhysicsEditor",
 		"label": "ball",
 		"isStatic": true,
-		"density": 0.1,
+		"density": 0.10000000149011612,
 		"restitution": 0,
-		"friction": 0.1,
-		"frictionAir": 0.01,
+		"friction": 0.10000000149011612,
+		"frictionAir": 0.009999999776482582,
 		"frictionStatic": 0.5,
 		"collisionFilter": {
 			"group": 0,
@@ -19,9 +19,9 @@
 				"label": "",
 				"isSensor": false,
 				"circle": {
-					"x": 72,
-					"y": 72,
-					"radius": 70.88156740192403
+					"x": 72.17391304347827,
+					"y": 72.26086956521739,
+					"radius": 67.51881345323187
 				}
 			}
 		]
